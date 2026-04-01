@@ -1842,9 +1842,7 @@ function AiPage({
                     if (isAssistant) assistantOrder += 1;
                     const shouldShowFeedback =
                       isAssistant &&
-                      !!message.message_id &&
-                      assistantOrder % 4 === 0 &&
-                      String(message.content || "").trim().length >= 40;
+                      String(message.content || "").trim().length >= 1;
                     const feedback = chatFeedbackState[message.message_id] || {
                       helpful: null,
                       expanded: false,

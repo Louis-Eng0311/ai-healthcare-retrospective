@@ -24,3 +24,8 @@ app/ui/auth-demo/
 .coverage.*
 site/
 frontend/.vite/
+._*
+.DS_Store
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" style=""><head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Slide 3 - 서비스 소개</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            column-gap: 24px;
+            padding: 56px 80px;
+            height: 100%;
+            align-items: center;
+        }
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        .feature-icon-box {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        .image-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 8px solid white;
+            height: 800px;
+        }
+        .image-scroll-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .landing-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* Gradient overlay at bottom of image to smooth cut-off */
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.1));
+        }
+    </style>
+</head>
+<body style="">
+<div class="slide-container">
+<div class="grid-layout">
+<!-- Left Column: Text Content -->
+<div class="col-span-5 flex flex-col justify-center pr-8">
+<div class="mb-8">
+<span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-primary font-bold text-lg tracking-wide mb-4">
+                        03. SERVICE OVERVIEW
+                    </span>
+<h1 class="text-6xl font-bold text-slate-900 leading-tight mb-6">
+<span class="text-primary">케어브릿지</span>,<br>
+                        데이터로 연결하는<br>
+                        안심 헬스케어
+                    </h1>
+<p class="text-2xl text-slate-500 leading-relaxed font-light mb-12">
+                        ‘문서(처방전) → 데이터 → 가이드 → 행동 변화’로 이어지는<br>
+                        All-in-One 복약 관리 플랫폼입니다.
+                    </p>
+</div>
+<!-- Key Values List -->
+<div class="space-y-4">
+<div class="feature-item">
+<div class="feature-icon-box bg-blue-50 text-primary">
+<i class="fa-solid fa-file-invoice text-2xl"></i>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-slate-800 mb-1">정확한 데이터화 (OCR)</h3>
+<p class="text-lg text-slate-500">종이 처방전을 촬영만 하면<br>정확한 약물 데이터로 자동 변환합니다.</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon-box bg-teal-50 text-accent">
+<i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-slate-800 mb-1">AI 맞춤 가이드</h3>
+<p class="text-lg text-slate-500">어려운 의학 정보를 환자 눈높이에 맞춘<br>복약 및 생활습관 가이드로 제공합니다.</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon-box bg-indigo-50 text-indigo-500">
+<i class="fa-solid fa-hands-holding-circle text-2xl"></i>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-slate-800 mb-1">보호자 연결 (Connected Care)</h3>
+<p class="text-lg text-slate-500">환자의 복약 상태와 병원 일정을<br>보호자가 실시간으로 확인하고 챙깁니다.</p>
+</div>
+</div>
+</div>
+<!-- Target Users -->
+<div class="mt-12 pt-8 border-t border-slate-200 flex space-x-12">
+<div>
+<p class="text-sm text-slate-400 font-bold tracking-wider mb-2">PRIMARY TARGET</p>
+<p class="text-xl font-medium text-slate-700">고령자 · 만성질환자</p>
+</div>
+<div>
+<p class="text-sm text-slate-400 font-bold tracking-wider mb-2">SECONDARY TARGET</p>
+<p class="text-xl font-medium text-slate-700">보호자 · 요양 보호사</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Large Image -->
+<div class="col-span-7 flex items-center justify-center pl-8 h-full">
+<div class="image-container w-full">
+<div class="image-scroll-wrapper">
+<!-- Using the provided Landing Page image URL -->
+<img alt="CareBridge Service Landing Page" class="landing-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%85%E1%85%A2%E1%86%AB%E1%84%83%E1%85%B5%E1%86%BC.png" data-height-listener-added="true">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

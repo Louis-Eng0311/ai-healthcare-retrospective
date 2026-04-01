@@ -1760,7 +1760,6 @@ async def _get_active_meds(patient_id: int) -> list[dict[str, Any]]:
         )
     return results
 
-
 # 현재 복약 일정 조회
 async def _get_active_schedules(patient_id: int) -> list[dict[str, Any]]:
     schedules = await MedSchedule.filter(

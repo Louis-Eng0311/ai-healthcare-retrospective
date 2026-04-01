@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slide 9 - 1차 스프린트</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        .content-wrapper {
+            padding: 56px 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Colors */
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+        .border-primary { border-color: #2F6BFF; }
+
+        /* Typography */
+        .section-tag {
+            background-color: #EFF6FF;
+            color: #2F6BFF;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .hero-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid #E2E8F0;
+            border-radius: 24px;
+            padding: 22px 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 18px -8px rgba(47, 107, 255, 0.12);
+        }
+
+        .hero-summary h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1E293B;
+        }
+
+        .hero-summary p {
+            margin: 0;
+            font-size: 18px;
+            color: #475569;
+            line-height: 1.55;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .hero-tag {
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .tag-blue { background: #EFF6FF; color: #2F6BFF; }
+        .tag-emerald { background: #ECFDF5; color: #059669; }
+        .tag-slate { background: #F1F5F9; color: #475569; }
+        .tag-amber { background: #FFF7ED; color: #C2410C; }
+
+        .visual-layout {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            gap: 18px;
+            flex: 1;
+            padding-bottom: 10px;
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            min-height: 0;
+            height: 100%;
+        }
+
+        .screenshot-card {
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 18px 30px -18px rgba(15, 23, 42, 0.2);
+            border: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            min-height: 0;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 36px -18px rgba(47, 107, 255, 0.2);
+        }
+
+        .image-container {
+            flex: 1;
+            overflow: hidden;
+            background-color: #F8FAFC;
+            position: relative;
+            padding: 10px 10px 0;
+        }
+
+        .app-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center top;
+            background: #F8FAFC;
+        }
+
+        .caption-bar {
+            padding: 10px 14px;
+            background-color: white;
+            border-top: 1px solid #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .caption-text {
+            font-weight: 700;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            font-size: 10px;
+            padding: 4px 7px;
+            border-radius: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .badge-done { background-color: #DCFCE7; color: #166534; }
+
+        .feature-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 18px 18px 16px;
+            box-shadow: 0 10px 20px -18px rgba(15, 23, 42, 0.3);
+        }
+
+        .feature-card h4 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1E293B;
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #64748B;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .feature-item {
+            display: grid;
+            grid-template-columns: 58px minmax(0, 1fr);
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%);
+            border: 1px solid #E2E8F0;
+            border-radius: 22px;
+            padding: 16px 18px;
+            box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.35);
+        }
+
+        .feature-item:first-child {
+            border-color: rgba(47, 107, 255, 0.22);
+            box-shadow: 0 18px 36px -24px rgba(47, 107, 255, 0.28);
+            background: linear-gradient(135deg, rgba(239,246,255,0.88) 0%, rgba(255,255,255,0.98) 62%);
+        }
+
+        .feature-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2F6BFF 0%, #6EA2FF 100%);
+            color: #ffffff;
+            font-size: 24px;
+            box-shadow: 0 12px 26px -18px rgba(47, 107, 255, 0.65);
+            flex-shrink: 0;
+        }
+
+        .feature-item:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, #16C2B2 0%, #57D8CB 100%);
+            box-shadow: 0 12px 26px -18px rgba(22, 194, 178, 0.55);
+        }
+
+        .feature-item:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, #5B6CFF 0%, #8EA0FF 100%);
+            box-shadow: 0 12px 26px -18px rgba(91, 108, 255, 0.55);
+        }
+
+        .feature-item:nth-child(4) .feature-icon {
+            background: linear-gradient(135deg, #F59E0B 0%, #F8C55A 100%);
+            box-shadow: 0 12px 26px -18px rgba(245, 158, 11, 0.55);
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="content-wrapper">
+<!-- Header -->
+<div class="flex flex-col mb-8">
+<div>
+<span class="section-tag">
+                        09. SPRINT 1
+                    </span>
+</div>
+<h1 class="text-5xl font-bold text-slate-900 leading-tight">
+                    기반 데이터 파이프라인 구축<br/>
+<span class="text-3xl font-light text-slate-500 mt-2 block">사용자 연결 및 데이터 수집을 위한 토대 마련</span>
+</h1>
+</div>
+<!-- Main Content: Split Layout -->
+<div class="flex w-full h-full gap-10">
+<!-- Left Column: Description -->
+<div class="flex-1" style="flex: 0.82 0 0%;">
+<div class="flex flex-col justify-center pb-8 h-full">
+<!-- Sprint Goal -->
+<div class="sprint-goal-box">
+<h3 class="text-xl font-bold text-slate-800 mb-2">SPRINT GOAL</h3>
+<p class="text-2xl text-slate-600 font-medium leading-relaxed">
+                            안정적인 사용자 인증 체계와<br/>
+<span class="text-primary font-bold">안전한 업로드와 빠른 문서 인식</span> 구조 완성
+                        </p>
+</div>
+<div class="flex flex-wrap gap-3 mb-8 px-2">
+<span class="px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-semibold text-sm">사용자 인증</span>
+<span class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-sm">보호자 연동</span>
+<span class="px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-sm">문서 업로드</span>
+<span class="px-4 py-2 rounded-full bg-amber-50 text-amber-700 font-semibold text-sm">업로드 보안</span>
+</div>
+<!-- Deliverables List -->
+<div class="feature-list px-2">
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+<div>
+<h4 class="text-xl font-bold text-slate-800 mb-1">인증 및 인가 시스템</h4>
+<p class="text-lg text-slate-500">이메일/소셜 로그인, 역할별 접근 제어, 안전한 세션 관리</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-users"></i></div>
+<div>
+<h4 class="text-xl font-bold text-slate-800 mb-1">환자-보호자 관계형 데이터</h4>
+<p class="text-lg text-slate-500">초대 코드 기반 환자-보호자 연결과 대상 환자 선택 구조</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+<div>
+<h4 class="text-xl font-bold text-slate-800 mb-1">문서 업로드 파이프라인</h4>
+<p class="text-lg text-slate-500">파일 검증, 업로드 권한 확인, 문서 이력 저장 흐름 구축</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+<div>
+<h4 class="text-xl font-bold text-slate-800 mb-1">비동기 처리 아키텍처</h4>
+<p class="text-lg text-slate-500">비동기 처리로 OCR 병목을 줄이고 실패 상황도 안정적으로 관리</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: UI Gallery -->
+<div class="flex-1 h-full pb-4" style="flex: 1.18 0 0%;">
+<div class="screenshot-grid">
+<!-- Image 1: Login -->
+<div class="screenshot-card">
+<div class="image-container">
+<img alt="로그인 화면" class="app-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%E1%84%8B%E1%85%B5%E1%86%AB.png"/>
+</div>
+<div class="caption-bar">
+<span class="caption-text">로그인 / 인증</span>
+<span class="status-badge badge-done">Done</span>
+</div>
+</div>
+<!-- Image 2: Signup -->
+<div class="screenshot-card">
+<div class="image-container">
+<img alt="회원가입 화면" class="app-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%92%E1%85%AC%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%B8.png"/>
+</div>
+<div class="caption-bar">
+<span class="caption-text">회원가입</span>
+<span class="status-badge badge-done">Done</span>
+</div>
+</div>
+<!-- Image 3: Connection -->
+<div class="screenshot-card">
+<div class="image-container">
+<img alt="초대코드 연동" class="app-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8B%E1%85%A3%E1%86%A8%E1%84%8C%E1%85%A1%20%E1%84%8E%E1%85%A9%E1%84%83%E1%85%A2%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8B%E1%85%A7%E1%86%AB%E1%84%83%E1%85%A9%E1%86%BC.png"/>
+</div>
+<div class="caption-bar">
+<span class="caption-text">보호자 연동 (초대코드)</span>
+<span class="status-badge badge-done">Done</span>
+</div>
+</div>
+<!-- Image 4: Upload -->
+<div class="screenshot-card">
+<div class="image-container">
+<img alt="처방전 업로드" class="app-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/OCR%20%E1%84%8B%E1%85%A5%E1%86%B8%E1%84%85%E1%85%A9%E1%84%83%E1%85%B3.png"/>
+</div>
+<div class="caption-bar">
+<span class="caption-text">처방전 업로드 &amp; OCR 요청</span>
+<span class="status-badge badge-done">Done</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

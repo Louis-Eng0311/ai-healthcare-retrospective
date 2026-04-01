@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slide 14 - 챗봇 기능 (강조)</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC;
+            color: #334155;
+            /* No gradients as per requirement, using solid background color */
+        }
+
+        /* Background decorative circle using solid color and opacity instead of gradient */
+        .bg-blob {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background-color: #EFF6FF;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: 0;
+            right: -150px;
+            top: 50px;
+            filter: blur(80px);
+        }
+
+        .content-wrapper {
+            padding: 56px 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Typography & Colors */
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+
+        .section-tag {
+            background-color: #2F6BFF;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: 1.5px;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 10px rgba(47, 107, 255, 0.2);
+        }
+
+        /* Layout */
+        .hero-layout {
+            display: flex;
+            gap: 56px;
+            height: 100%;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .text-column {
+            flex: 0 0 38%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 34px;
+        }
+
+        .image-column {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative;
+            padding-right: 0;
+            padding-top: 0;
+        }
+
+        /* Feature List */
+        .highlight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-top: 24px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            background: white;
+            padding: 22px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F1F5F9;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(47, 107, 255, 0.1);
+            border-color: #BFDBFE;
+        }
+
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background-color: #EFF6FF;
+            color: #2F6BFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(47, 107, 255, 0.1);
+        }
+
+        .item-content h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1E293B;
+            margin: 0 0 8px 0;
+        }
+
+        .item-content p {
+            font-size: 15px;
+            color: #64748B;
+            margin: 0;
+            line-height: 1.55;
+            word-break: keep-all;
+        }
+
+        /* Image Frame */
+        .browser-frame {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.15);
+            padding: 14px;
+            width: 100%;
+            max-width: 940px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid #E2E8F0;
+            transform: translateY(-84px);
+        }
+
+        .frame-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: #FF5F56; }
+        .dot-yellow { background-color: #FFBD2E; }
+        .dot-green { background-color: #27C93F; }
+
+        .screen-content {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #F1F5F9;
+            background-color: #FFFFFF;
+            aspect-ratio: 16 / 9;
+        }
+
+        .screen-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            object-position: center top;
+        }
+
+        .context-card {
+            position: absolute;
+            top: -146px;
+            right: -6px;
+            width: 296px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 14px 16px;
+            box-shadow: 0 18px 30px -20px rgba(15, 23, 42, 0.18);
+            z-index: 15;
+        }
+
+        .context-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+            letter-spacing: 0.04em;
+        }
+
+        .context-label::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #2F6BFF 0%, #6AA5FF 100%);
+            box-shadow: 0 0 0 6px rgba(47, 107, 255, 0.08);
+        }
+
+        .context-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .context-chip {
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .chip-blue { background: #EFF6FF; color: #2563EB; }
+        .chip-emerald { background: #ECFDF5; color: #059669; }
+        .chip-violet { background: #F5F3FF; color: #7C3AED; }
+
+        /* Footer */
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="bg-blob"></div>
+<div class="content-wrapper">
+<!-- Header -->
+<div class="flex flex-col">
+<div>
+<span class="section-tag">
+<i class="fa-solid fa-robot mr-3"></i>14. AI CHATBOT (CORE)
+                </span>
+</div>
+<h1 class="text-5xl font-bold text-slate-900 leading-tight tracking-tight">
+                언제 어디서나 물어보는<br/>
+<span class="text-primary">실시간 AI 약사</span>
+</h1>
+<p class="text-2xl font-light text-slate-500 mt-4 max-w-3xl">
+                복잡한 약 정보와 주의사항을 실시간 대화로 쉽고 정확하게 확인하세요.
+            </p>
+</div>
+<!-- Main Content -->
+<div class="hero-layout">
+<!-- Left: Text Content -->
+<div class="text-column">
+<div class="highlight-list">
+<!-- Item 1 -->
+<div class="highlight-item" style="border-left: 4px solid #2F6BFF;">
+<div class="item-icon">
+<i class="fa-solid fa-comments"></i>
+</div>
+<div class="item-content">
+<h4>실시간 질의응답</h4>
+<p>복약 방법, 스케줄, 부작용 등 궁금한 점을 자연어로 질문하면 AI가 가이드를 바탕으로 즉시 답변합니다.</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="highlight-item">
+<div class="item-icon" style="background-color: #F0FDFA; color: #0F766E;">
+<i class="fa-solid fa-highlighter"></i>
+</div>
+<div class="item-content">
+<h4>근거 기반 답변 하이라이트</h4>
+<p>답변의 신뢰도를 높이기 위해 참조한 건강 프로필과 가이드 원문의 근거 문장을 자동으로 찾아 하이라이트합니다.</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="highlight-item">
+<div class="item-icon" style="background-color: #FAF5FF; color: #7E22CE;">
+<i class="fa-solid fa-users-viewfinder"></i>
+</div>
+<div class="item-content">
+<h4>보호자 동일 컨텍스트 공유</h4>
+<p>환자가 나눈 상담 내용을 보호자도 동일한 맥락에서 확인하여, 더욱 안심하고 케어할 수 있습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Image Content -->
+<div class="image-column">
+<div class="w-full">
+<div class="context-card">
+<div class="context-label">답변에 활용되는 정보</div>
+<div class="context-list">
+<span class="context-chip chip-blue">건강 프로필</span>
+<span class="context-chip chip-emerald">최신 가이드</span>
+<span class="context-chip chip-blue">현재 복용 약</span>
+<span class="context-chip chip-emerald">복약 일정</span>
+<span class="context-chip chip-violet">병원 일정</span>
+<span class="context-chip chip-violet">최근 대화 맥락</span>
+</div>
+</div>
+<div class="browser-frame">
+<div class="frame-header">
+<div class="dot dot-red"></div>
+<div class="dot dot-yellow"></div>
+<div class="dot dot-green"></div>
+<div class="ml-auto text-xs text-gray-400 font-medium px-2 py-0.5 bg-gray-100 rounded">chat.carebridge.ai</div>
+</div>
+<div class="screen-content">
+<img alt="AI 챗봇 질의응답 화면" class="screen-image" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%8E%E1%85%A2%E1%86%BA%E1%84%87%E1%85%A9%E1%86%BA.png"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

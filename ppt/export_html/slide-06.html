@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" style=""><head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Slide 6 - 시스템 아키텍처</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        .content-wrapper {
+            padding: 56px 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Colors */
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .border-primary { border-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+
+        /* Diagram Containers */
+        .architecture-board {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #FFFFFF;
+            border-radius: 32px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+            padding: 60px;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        /* Node Styling */
+        .arch-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            border-radius: 16px;
+            background: white;
+            border: 2px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            min-width: 180px;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        .arch-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .node-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #F8FAFC;
+        }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 20px;
+            color: #1E293B;
+            margin-bottom: 4px;
+        }
+
+        .node-desc {
+            font-size: 14px;
+            color: #64748B;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Specific Node Colors */
+        .node-client { border-color: #60A5FA; }
+        .node-client .node-icon { color: #2563EB; background-color: #EFF6FF; }
+
+        .node-nginx { border-color: #34D399; }
+        .node-nginx .node-icon { color: #059669; background-color: #ECFDF5; }
+
+        .node-api { border-color: #FBBF24; }
+        .node-api .node-icon { color: #D97706; background-color: #FFFBEB; }
+
+        .node-db { border-color: #94A3B8; }
+        .node-db .node-icon { color: #475569; background-color: #F1F5F9; }
+
+        .node-redis { border-color: #F87171; }
+        .node-redis .node-icon { color: #DC2626; background-color: #FEF2F2; }
+
+        .node-worker { border-color: #A78BFA; }
+        .node-worker .node-icon { color: #7C3AED; background-color: #F5F3FF; }
+
+        .node-external { border-color: #CBD5E1; border-style: dashed; }
+        .node-external .node-icon { color: #64748B; background-color: #F8FAFC; }
+
+        /* Groups */
+        .arch-group {
+            border: 2px dashed #CBD5E1;
+            border-radius: 24px;
+            padding: 30px;
+            background-color: #F8FAFC;
+            position: relative;
+        }
+
+        .group-label {
+            position: absolute;
+            top: -14px;
+            left: 24px;
+            background-color: #F8FAFC;
+            padding: 0 12px;
+            color: #64748B;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Connectors (Visual Only with CSS) */
+        .connector-h {
+            height: 2px;
+            background-color: #94A3B8;
+            flex-grow: 1;
+            min-width: 40px;
+            position: relative;
+        }
+
+        .connector-h::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #94A3B8;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .connector-v {
+            width: 2px;
+            background-color: #94A3B8;
+            height: 40px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .connector-v::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid #94A3B8;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+        }
+
+        .arrow-right { color: #94A3B8; font-size: 20px; }
+        .arrow-down { color: #94A3B8; font-size: 20px; }
+
+        /* Layout Grid for Diagram */
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+            grid-template-rows: auto auto;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .dashed-line-h {
+            border-top: 2px dashed #94A3B8;
+            width: 100%;
+            height: 1px;
+            position: relative;
+        }
+    </style>
+</head>
+<body style="">
+<div class="slide-container">
+<div class="content-wrapper">
+<!-- Header -->
+<div class="flex flex-col mb-8">
+<div class="mb-4">
+<span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-primary font-bold text-lg tracking-wide">
+                    06. SYSTEM ARCHITECTURE
+                </span>
+</div>
+<h1 class="text-5xl font-bold text-slate-900 leading-tight">
+                시스템 아키텍처<br>
+<span class="text-3xl font-light text-slate-500 mt-2 block">비동기 큐 기반의 고성능 데이터 처리 파이프라인</span>
+</h1>
+</div>
+<!-- Architecture Diagram -->
+<div class="architecture-board">
+<!-- 1. Client Layer -->
+<div class="flex flex-col items-center">
+<div class="arch-node node-client mb-4">
+<div class="node-icon"><i class="fa-brands fa-react"></i></div>
+<div class="node-title">Client App</div>
+<div class="node-desc">React SPA</div>
+</div>
+<div class="text-sm font-bold text-slate-400">User Interface</div>
+</div>
+<!-- Connector -->
+<div class="flex flex-col items-center justify-center w-16">
+<div class="text-xs text-slate-400 font-mono mb-1">HTTPS</div>
+<div class="connector-h w-full"></div>
+</div>
+<!-- 2. Gateway Layer -->
+<div class="flex flex-col items-center">
+<div class="arch-node node-nginx mb-4">
+<div class="node-icon"><i class="fa-solid fa-server"></i></div>
+<div class="node-title">Gateway</div>
+<div class="node-desc">Nginx Proxy</div>
+</div>
+<div class="text-sm font-bold text-slate-400">Load Balancer</div>
+</div>
+<!-- Connector -->
+<div class="flex flex-col items-center justify-center w-16">
+<div class="connector-h w-full"></div>
+</div>
+<!-- 3. Application Group -->
+<div class="arch-group flex gap-12 items-start">
+<div class="group-label">Application Layer</div>
+<!-- API Server & DB Column -->
+<div class="flex flex-col items-center gap-8">
+<div class="arch-node node-api">
+<div class="node-icon"><i class="fa-solid fa-bolt"></i></div>
+<div class="node-title">API Server</div>
+<div class="node-desc">FastAPI</div>
+</div>
+<div class="h-12 w-full flex justify-center items-center">
+<div class="connector-v h-full"></div>
+</div>
+<div class="arch-node node-db">
+<div class="node-icon"><i class="fa-solid fa-database"></i></div>
+<div class="node-title">Database</div>
+<div class="node-desc">MySQL 8.0</div>
+</div>
+</div>
+<!-- Async Flow -->
+<div class="flex flex-col justify-start pt-10">
+<div class="flex items-center gap-4">
+<!-- Connector -->
+<div class="w-12 flex flex-col items-center">
+<div class="text-xs text-slate-400 font-mono mb-1">Push</div>
+<div class="connector-h w-full"></div>
+</div>
+<!-- Redis -->
+<div class="arch-node node-redis">
+<div class="node-icon"><i class="fa-solid fa-layer-group"></i></div>
+<div class="node-title">Message Queue</div>
+<div class="node-desc">Redis</div>
+</div>
+<!-- Connector -->
+<div class="w-12 flex flex-col items-center">
+<div class="text-xs text-slate-400 font-mono mb-1">Pop</div>
+<div class="connector-h w-full"></div>
+</div>
+<!-- Worker Group -->
+<div class="flex flex-col gap-6">
+<div class="arch-node node-worker">
+<div class="node-icon"><i class="fa-solid fa-robot"></i></div>
+<div class="node-title">AI / OCR Worker</div>
+<div class="node-desc">Celery Workers</div>
+</div>
+<!-- External Connection -->
+<div class="flex items-center gap-4 mt-2">
+<div class="w-8 border-t-2 border-dashed border-slate-300 relative h-1"></div>
+<div class="arch-node node-external py-3 px-5 min-w-0">
+<div class="flex items-center gap-3">
+<i class="fa-solid fa-cloud text-slate-400"></i>
+<div class="text-slate-600 font-bold text-sm">OpenAI / Naver API</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

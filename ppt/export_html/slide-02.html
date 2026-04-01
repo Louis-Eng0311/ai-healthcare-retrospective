@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" style=""><head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Slide 2 - 프로젝트 목적</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC; /* Slate 50 */
+            color: #334155; /* Slate 700 */
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            column-gap: 24px;
+            padding: 56px 80px;
+            height: 100%;
+        }
+        .text-primary {
+            color: #2F6BFF;
+        }
+        .bg-primary {
+            background-color: #2F6BFF;
+        }
+        .text-accent {
+            color: #16C2B2;
+        }
+        .bg-accent {
+            background-color: #16C2B2;
+        }
+        .objective-card {
+            transition: all 0.3s ease;
+        }
+        /* Custom scrollbar for content if needed, though we aim for no scroll */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body style="">
+<div class="slide-container">
+<div class="grid-layout">
+<!-- Left Column: Title & Context -->
+<div class="col-span-5 flex flex-col justify-center pr-12">
+<div class="mb-6">
+<span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-primary font-bold text-lg tracking-wide mb-4">
+                        02. PROJECT OBJECTIVES
+                    </span>
+</div>
+<h1 class="text-6xl font-bold text-slate-900 leading-tight mb-8">
+                    데이터로 연결하는<br>
+<span class="text-primary">스마트 케어 솔루션</span>
+</h1>
+<p class="text-2xl text-slate-500 leading-relaxed font-light">
+                    케어브릿지는 흩어진 의료 정보를 통합하고,<br>
+                    AI 기술로 환자와 보호자를 연결하여<br>
+                    지속 가능한 건강 관리 생태계를 만듭니다.
+                </p>
+<!-- Decorative element -->
+<div class="mt-16 w-24 h-2 bg-primary rounded-full"></div>
+</div>
+<!-- Right Column: Objectives List -->
+<div class="col-span-7 flex flex-col justify-center pl-10 border-l border-slate-200 h-full py-10">
+<div class="flex flex-col space-y-5 justify-center h-full">
+<!-- Item 1: Digitization -->
+<div class="objective-card flex items-center p-5 rounded-2xl bg-white shadow-sm border border-slate-100">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-primary text-2xl mr-6">
+<i class="fa-solid fa-file-code"></i>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-800 mb-1">진료 문서의 데이터화</h3>
+<p class="text-base text-slate-600">OCR 기술을 활용하여 처방전과 약 봉투 이미지를 구조화된 디지털 데이터로 정밀하게 변환합니다.</p>
+</div>
+</div>
+<!-- Item 2: AI Guide -->
+<div class="objective-card flex items-center p-5 rounded-2xl bg-white shadow-sm border border-slate-100">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-teal-50 flex items-center justify-center text-accent text-2xl mr-6">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-800 mb-1">AI 기반 맞춤 가이드 생성</h3>
+<p class="text-base text-slate-600">환자의 약물 정보와 건강 데이터를 분석하여 복약 지도 및 생활 습관 개선 가이드를 자동으로 생성합니다.</p>
+</div>
+</div>
+<!-- Item 3: Behavioral Change -->
+<div class="objective-card flex items-center p-5 rounded-2xl bg-white shadow-sm border border-slate-100">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 text-2xl mr-6">
+<i class="fa-regular fa-calendar-check"></i>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-800 mb-1">행동 변화 유도</h3>
+<p class="text-base text-slate-600">최적화된 복약 스케줄과 적시 알림(Notification)을 통해 규칙적인 투약 습관과 행동 변화를 이끌어냅니다.</p>
+</div>
+</div>
+<!-- Item 4: Guardian Connection -->
+<div class="objective-card flex items-center p-5 rounded-2xl bg-white shadow-sm border border-slate-100">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center text-green-500 text-2xl mr-6">
+<i class="fa-solid fa-hands-holding-circle"></i>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-800 mb-1">보호자 연결 및 안심 케어</h3>
+<p class="text-base text-slate-600">환자와 보호자를 앱으로 연결하여 실시간 모니터링과 정서적 지지가 가능한 원격 케어 환경을 제공합니다.</p>
+</div>
+</div>
+<!-- Item 5: Scalability -->
+<div class="objective-card flex items-center p-5 rounded-2xl bg-white shadow-sm border border-slate-100">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-500 text-2xl mr-6">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-800 mb-1">B2C/B2B 서비스 확장</h3>
+<p class="text-base text-slate-600">개인 사용자 경험을 넘어 병·의원 및 약국 시스템과 연동 가능한 유연한 B2B SaaS 모델을 지향합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

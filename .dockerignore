@@ -1,0 +1,12 @@
+.git/
+.github/
+.idea/
+.vscode/
+.venv/
+envs/
+__pycache__/
+*.pyc
+*.env
+.env
+.DS_Store
+._*

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slide 4 - 핵심 기능 흐름</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Common Styles */
+        body { margin: 0; padding: 0; background-color: #F8FAFC; font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
+        .slide-container { width: 1920px; height: 1080px; position: relative; display: flex; flex-direction: column; background-color: #F8FAFC; color: #334155; }
+        .content-wrapper { padding: 56px 80px; flex: 1; display: flex; flex-direction: column; }
+
+        /* Colors */
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+        .border-primary { border-color: #2F6BFF; }
+
+        /* Card Styles */
+        .process-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            flex: 1;
+            height: 520px;
+            justify-content: flex-start;
+            border: 1px solid #E2E8F0;
+            transition: transform 0.3s ease;
+        }
+
+        /* Highlight specific cards */
+        .process-card.highlight {
+            border: 2px solid #2F6BFF;
+            background: linear-gradient(to bottom, #FFFFFF, #F8FAFC);
+            box-shadow: 0 20px 40px -5px rgba(47, 107, 255, 0.15);
+            transform: translateY(-10px);
+            z-index: 10;
+        }
+
+        .icon-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            font-size: 36px;
+            background-color: #F1F5F9;
+            color: #64748B;
+            transition: all 0.3s ease;
+        }
+
+        .process-card.highlight .icon-circle {
+            background-color: #EFF6FF; /* Blue-50 */
+            color: #2F6BFF;
+        }
+
+        .step-number {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #CBD5E1;
+            letter-spacing: 1px;
+        }
+
+        .process-card.highlight .step-number {
+            color: #2F6BFF;
+        }
+
+        .arrow-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            color: #CBD5E1;
+            font-size: 24px;
+            flex: none;
+        }
+
+        .card-tag {
+            margin-top: auto;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: #F1F5F9;
+            color: #64748B;
+        }
+
+        .process-card.highlight .card-tag {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="content-wrapper">
+<!-- Header -->
+<div class="flex flex-col mb-12">
+<div class="mb-4">
+<span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-primary font-bold text-lg tracking-wide">
+                        04. KEY WORKFLOW
+                    </span>
+</div>
+<h1 class="text-5xl font-bold text-slate-900 leading-tight">
+                    핵심 기능 흐름도<br/>
+<span class="text-3xl font-light text-slate-500 mt-2 block">문서에서 행동 변화까지 이어지는 Seamless Process</span>
+</h1>
+</div>
+<!-- Process Diagram -->
+<div class="flex items-center justify-between w-full h-full pb-8 gap-6 px-4">
+<!-- Step 1 -->
+<div class="process-card">
+<span class="step-number">STEP 01</span>
+<div class="icon-circle">
+<i class="fa-solid fa-file-arrow-up"></i>
+</div>
+<h3 class="text-2xl font-bold text-slate-800 mb-3">문서 업로드</h3>
+<p class="text-lg text-slate-500 leading-relaxed word-keep-all">
+                        처방전 또는 약 봉투를<br/>
+                        앱으로 촬영하거나<br/>
+                        이미지 파일로 업로드
+                    </p>
+<div class="card-tag">OCR Engine</div>
+</div>
+<div class="arrow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+<!-- Step 2 -->
+<div class="process-card">
+<span class="step-number">STEP 02</span>
+<div class="icon-circle">
+<i class="fa-solid fa-list-check"></i>
+</div>
+<h3 class="text-2xl font-bold text-slate-800 mb-3">데이터 확정</h3>
+<p class="text-lg text-slate-500 leading-relaxed word-keep-all">
+                        OCR로 추출된 약 정보를<br/>
+                        사용자가 확인하고 수정하여<br/>
+                        최종 데이터로 저장
+                    </p>
+<div class="card-tag">Verification</div>
+</div>
+<div class="arrow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+<!-- Step 3 (Highlight) -->
+<div class="process-card highlight">
+<span class="step-number">STEP 03</span>
+<div class="icon-circle">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+</div>
+<h3 class="text-2xl font-bold text-slate-900 mb-3">AI 가이드 생성</h3>
+<p class="text-lg text-slate-600 leading-relaxed word-keep-all">
+                        약물 정보와 건강 데이터를 <br/>
+                        분석해<br/>
+                        맞춤형 복약 안내 및<br/>
+                        생활 습관 가이드 자동 생성
+                    </p>
+<div class="card-tag">Core AI Feature</div>
+</div>
+<div class="arrow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+<!-- Step 4 -->
+<div class="process-card">
+<span class="step-number">STEP 04</span>
+<div class="icon-circle">
+<i class="fa-regular fa-calendar-check"></i>
+</div>
+<h3 class="text-2xl font-bold text-slate-800 mb-3">복약 관리</h3>
+<p class="text-lg text-slate-500 leading-relaxed word-keep-all">
+                        자동 등록된 스케줄에 따라<br/>
+                        정확한 시간에 알림을 받고<br/>
+                        복용 여부를 간편하게 기록
+                    </p>
+<div class="card-tag">Daily Routine</div>
+</div>
+<div class="arrow-connector"><i class="fa-solid fa-chevron-right"></i></div>
+<!-- Step 5 -->
+<div class="process-card">
+<span class="step-number">STEP 05</span>
+<div class="icon-circle">
+<i class="fa-solid fa-user-shield"></i>
+</div>
+<h3 class="text-2xl font-bold text-slate-800 mb-3">보호자 케어</h3>
+<p class="text-lg text-slate-500 leading-relaxed word-keep-all">
+                        환자의 복약 상태 모니터링,<br/>
+                        미복용 시 리마인드 발송,<br/>
+                        챗봇을 통한 실시간 상담
+                    </p>
+<div class="card-tag">Connected Care</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

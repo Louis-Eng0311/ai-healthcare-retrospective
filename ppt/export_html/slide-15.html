@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base href="file:///Users/admin/PyCharmProjects/AI_Health_final/ppt/">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slide 15 - 복약 관리 기능</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #F8FAFC;
+            color: #334155;
+        }
+        .content-wrapper {
+            padding: 56px 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Colors */
+        .text-primary { color: #2F6BFF; }
+        .bg-primary { background-color: #2F6BFF; }
+        .text-accent { color: #16C2B2; }
+        .bg-accent { background-color: #16C2B2; }
+
+        /* Gallery Layout */
+        .gallery-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 48px; /* Increased gap since arrows are removed */
+            padding: 20px 0;
+        }
+
+        .gallery-card {
+            flex: 1;
+            height: auto;
+            max-height: 700px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px -10px rgba(47, 107, 255, 0.15);
+            border-color: #CBD5E1;
+        }
+
+        .image-frame {
+            flex: 0 0 auto;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .app-screenshot {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-card:hover .app-screenshot {
+            transform: scale(1.03);
+        }
+
+        /* Badge Indicator */
+        .feature-badge {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background-color: rgba(47, 107, 255, 0.9);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .gallery-card:nth-child(2) .feature-badge {
+            background-color: rgba(22, 194, 178, 0.9); /* Accent color for middle card */
+        }
+
+        /* Content Area */
+        .card-content {
+            padding: 24px 26px 22px;
+            background-color: white;
+            flex-shrink: 0; /* Prevent shrinking */
+            height: 176px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-desc {
+            font-size: 15px;
+            color: #64748B;
+            line-height: 1.5;
+            margin: 0;
+            word-break: keep-all;
+        }
+
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background-color: #EFF6FF;
+            color: #2F6BFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .gallery-card:nth-child(2) .icon-circle {
+            background-color: #E0F2F1;
+            color: #16C2B2;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="content-wrapper">
+<!-- Header -->
+<div class="flex flex-col mb-8">
+<div class="mb-4">
+<span class="inline-block px-4 py-2 rounded-full bg-blue-100 text-primary font-bold text-lg tracking-wide">
+                        15. MEDICATION MANAGEMENT
+                    </span>
+</div>
+<h1 class="text-5xl font-bold text-slate-900 leading-tight">
+                    통합 복약 관리 시스템<br/>
+<span class="text-3xl font-light text-slate-500 mt-2 block">환자의 일상을 빈틈없이 케어하는 복약·일정·알림 기능</span>
+</h1>
+</div>
+<!-- Gallery Section -->
+<div class="gallery-container">
+<!-- Feature 1: Medication Check -->
+<div class="gallery-card">
+<div class="image-frame">
+<div class="feature-badge">DAILY CHECK</div>
+<img alt="복약 체크 화면" class="app-screenshot" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8B%E1%85%A3%E1%86%A8%20%E1%84%8E%E1%85%A6%E1%84%8F%E1%85%B3.png"/>
+</div>
+<div class="card-content">
+<div class="card-title">
+<div class="icon-circle"><i class="fa-solid fa-pills"></i></div>
+<p>실시간 복약 체크</p>
+</div>
+<p class="card-desc">
+                            오늘 복용해야 할 약, 미복용 건수, 완료 현황을 직관적인 대시보드로 제공합니다. 시간대별(아침/점심/저녁) 복용 여부를 원터치로 기록할 수 있습니다.
+                        </p>
+</div>
+</div>
+<!-- Feature 2: Schedule -->
+<div class="gallery-card">
+<div class="image-frame">
+<div class="feature-badge">CALENDAR</div>
+<img alt="스케줄 관리 화면" class="app-screenshot" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%A6%E1%84%8C%E1%85%AE%E1%86%AF.png"/>
+</div>
+<div class="card-content">
+<div class="card-title">
+<div class="icon-circle"><i class="fa-solid fa-calendar-days"></i></div>
+<p>진료 일정 관리</p>
+</div>
+<p class="card-desc">
+                            병원 방문일, 검사 예약 등 주요 의료 일정을 월간/주간 캘린더로 관리합니다. 일정 임박 시 자동으로 리마인드 알림을 발송하여 방문 누락을 방지합니다.
+                        </p>
+</div>
+</div>
+<!-- Feature 3: Notification Center -->
+<div class="gallery-card">
+<div class="image-frame">
+<div class="feature-badge">ALERT CENTER</div>
+<img alt="알림 센터 화면" class="app-screenshot" src="./ppt%20%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5/%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%85%E1%85%B5%E1%86%B7%20%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.png"/>
+</div>
+<div class="card-content">
+<div class="card-title">
+<div class="icon-circle"><i class="fa-solid fa-bell"></i></div>
+<p>스마트 알림 센터</p>
+</div>
+<p class="card-desc">
+                            복약 시간 알림, 미복용 경고, AI 가이드 생성 완료 등 모든 알림을 통합 관리합니다. 보호자가 보낸 메모를 이곳에서 확인할 수 있습니다.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

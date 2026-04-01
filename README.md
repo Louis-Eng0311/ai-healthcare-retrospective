@@ -255,3 +255,4 @@ GET /api/v1/dashboard?period=7
 ```
 
 - `period`: 조회 기간 (일), 기본값 7일, 최대 30일
+
