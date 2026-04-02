@@ -1226,11 +1226,22 @@ class DocumentService:
         self, med: ExtractedMed, cache_resolution: DrugCacheResolution
     ) -> ExtractedDrugValidationResponse:
         dosage_check_status = self._evaluate_dosage_check_status(med=med, cache=cache_resolution.cache)
-        needs_review = cache_resolution.name_match_status != "exact" or dosage_check_status in {"missing", "mismatch"}
+        missing_standard_code = bool(cache_resolution.cache) and not bool(
+            self._nullable_str(cache_resolution.cache.mfds_item_seq)
+        )
+        needs_review = (
+            cache_resolution.name_match_status != "exact"
+            or dosage_check_status in {"missing", "mismatch"}
+            or missing_standard_code
+        )
 
         reason = None
         if cache_resolution.name_match_status == "unmatched":
             reason = "약명 매칭 실패"
+        elif cache_resolution.name_match_status == "candidate":
+            reason = "표준코드 확정이 필요한 후보 매칭"
+        elif missing_standard_code:
+            reason = "표준코드 누락"
         elif dosage_check_status == "mismatch":
             reason = "용량 정보 불일치 가능성"
         elif dosage_check_status == "missing":

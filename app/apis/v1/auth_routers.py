@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse as Response
 
 from app.core import config
 from app.core.config import Env
+from app.dependencies.rate_limit import limit_auth_login, limit_auth_password_reset, limit_auth_refresh
 from app.dtos.auth import (
     FindEmailRequest,
     FindEmailResponse,
@@ -34,12 +35,18 @@ def _cookie_domain() -> str | None:
     return domain
 
 
+def _cookie_samesite() -> str:
+    # Cross-site social login callback in production requires SameSite=None.
+    return "none" if config.ENV == Env.PROD else "lax"
+
+
 def _build_login_response(tokens: dict, login_role: LoginRole) -> Response:
     resp = Response(
         content=LoginResponse(access_token=str(tokens["access_token"]), login_role=login_role).model_dump(),
         status_code=status.HTTP_200_OK,
     )
     _set_refresh_cookie(resp, tokens)
+    _apply_auth_no_store_headers(resp)
     return resp
 
 
@@ -55,16 +62,33 @@ def _set_refresh_cookie(resp: Response | RedirectResponse, tokens: dict) -> None
         value=str(tokens["refresh_token"]),
         httponly=True,
         secure=True if config.ENV == Env.PROD else False,
+        samesite=_cookie_samesite(),
         domain=_cookie_domain(),
         path="/",
         expires=refresh_exp,
     )
 
 
+def _apply_auth_no_store_headers(resp: Response | RedirectResponse) -> None:
+    # Prevent auth responses from being cached by browsers/proxies.
+    resp.headers["Cache-Control"] = "no-store"
+    resp.headers["Pragma"] = "no-cache"
+
+
+def _refresh_access_token(jwt_service: JwtService, refresh_token: str | None) -> Response:
+    if not refresh_token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is missing.")
+    access_token = jwt_service.refresh_jwt(refresh_token)
+    resp = Response(content=TokenRefreshResponse(access_token=str(access_token)).model_dump(), status_code=status.HTTP_200_OK)
+    _apply_auth_no_store_headers(resp)
+    return resp
+
+
 @auth_router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout() -> Response:
     resp = Response(content={"detail": "로그아웃되었습니다."}, status_code=status.HTTP_200_OK)
     resp.delete_cookie(key="refresh_token", domain=_cookie_domain(), path="/")
+    _apply_auth_no_store_headers(resp)
     return resp
 
 
@@ -81,6 +105,7 @@ async def signup(
 async def login(
     request: LoginRequest,
     auth_service: Annotated[AuthService, Depends(AuthService)],
+    _: Annotated[None, Depends(limit_auth_login)],
 ) -> Response:
     user = await auth_service.authenticate(request)
     tokens = await auth_service.login(user, role=request.role)
@@ -91,6 +116,7 @@ async def login(
 async def admin_login(
     request: LoginRequest,
     auth_service: Annotated[AuthService, Depends(AuthService)],
+    _: Annotated[None, Depends(limit_auth_login)],
 ) -> Response:
     """관리자 전용 로그인"""
     user = await auth_service.authenticate(request)
@@ -169,22 +195,29 @@ async def social_login_callback(
     if "text/html" in accept_header:
         redirect = RedirectResponse(url="/app", status_code=status.HTTP_302_FOUND)
         _set_refresh_cookie(redirect, tokens)
+        _apply_auth_no_store_headers(redirect)
         return redirect
 
     return _build_login_response(tokens, login_role=selected_role)
 
 
-@auth_router.get("/token/refresh", response_model=TokenRefreshResponse, status_code=status.HTTP_200_OK)
-async def token_refresh(
+@auth_router.post("/token/refresh", response_model=TokenRefreshResponse, status_code=status.HTTP_200_OK)
+async def token_refresh_post(
     jwt_service: Annotated[JwtService, Depends(JwtService)],
+    _: Annotated[None, Depends(limit_auth_refresh)],
     refresh_token: Annotated[str | None, Cookie()] = None,
 ) -> Response:
-    if not refresh_token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is missing.")
-    access_token = jwt_service.refresh_jwt(refresh_token)
-    return Response(
-        content=TokenRefreshResponse(access_token=str(access_token)).model_dump(), status_code=status.HTTP_200_OK
-    )
+    return _refresh_access_token(jwt_service, refresh_token)
+
+
+# Legacy GET endpoint is retained for backward compatibility.
+@auth_router.get("/token/refresh", response_model=TokenRefreshResponse, status_code=status.HTTP_200_OK)
+async def token_refresh_get(
+    jwt_service: Annotated[JwtService, Depends(JwtService)],
+    _: Annotated[None, Depends(limit_auth_refresh)],
+    refresh_token: Annotated[str | None, Cookie()] = None,
+) -> Response:
+    return _refresh_access_token(jwt_service, refresh_token)
 
 
 @auth_router.post("/find-email", response_model=FindEmailResponse, status_code=status.HTTP_200_OK)
@@ -200,6 +233,7 @@ async def find_email(
 async def reset_password(
     request: ResetPasswordRequest,
     auth_service: Annotated[AuthService, Depends(AuthService)],
+    _: Annotated[None, Depends(limit_auth_password_reset)],
 ) -> Response:
     await auth_service.reset_password(request.email, request.name, request.phone_number, request.new_password)
     return Response(content={"detail": "비밀번호가 성공적으로 재설정되었습니다."}, status_code=status.HTTP_200_OK)

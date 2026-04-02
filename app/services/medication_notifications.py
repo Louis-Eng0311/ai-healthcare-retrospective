@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
+from typing import Any
 
 from tortoise.expressions import Q
 
@@ -118,19 +119,65 @@ def _build_missed_message(group: MedicationGroup) -> tuple[str, str]:
     )
 
 
-async def _is_notification_enabled(user_id: int, field_name: str) -> bool:
-    settings = await NotificationSettings.get_or_none(user_id=user_id)
+def _extract_reminder_key(payload_json: str | None) -> str | None:
+    if not payload_json:
+        return None
+    try:
+        parsed: Any = json.loads(payload_json)
+    except Exception:
+        return None
+    if not isinstance(parsed, dict):
+        return None
+    reminder_key = parsed.get("reminder_key")
+    if not isinstance(reminder_key, str):
+        return None
+    normalized = reminder_key.strip()
+    return normalized or None
+
+
+async def _load_settings_map(user_ids: set[int]) -> dict[int, NotificationSettings]:
+    if not user_ids:
+        return {}
+    settings_rows = await NotificationSettings.filter(user_id__in=list(user_ids))
+    return {int(row.user_id): row for row in settings_rows}
+
+
+def _is_enabled_from_map(
+    *, settings_map: dict[int, NotificationSettings], user_id: int, field_name: str
+) -> bool:
+    settings = settings_map.get(user_id)
     if settings is None:
         return True
     return bool(getattr(settings, field_name, True))
 
 
-async def _notification_already_created(user_id: int, notification_type: str, reminder_key: str) -> bool:
-    return await Notification.filter(
-        user_id=user_id,
+async def _load_existing_reminder_keys_map(
+    *,
+    user_ids: set[int],
+    notification_type: str,
+    date_from: date,
+    date_to: date,
+) -> dict[int, set[str]]:
+    if not user_ids:
+        return {}
+
+    created_at_start = datetime.combine(date_from, time.min)
+    created_at_end = datetime.combine(date_to + timedelta(days=1), time.min)
+    rows = await Notification.filter(
+        user_id__in=list(user_ids),
         type=notification_type,
-        payload_json__contains=f'"reminder_key":"{reminder_key}"',
-    ).exists()
+        created_at__gte=created_at_start,
+        created_at__lt=created_at_end,
+        payload_json__contains='"reminder_key"',
+    ).all()
+
+    key_map: dict[int, set[str]] = {}
+    for row in rows:
+        reminder_key = _extract_reminder_key(getattr(row, "payload_json", None))
+        if not reminder_key:
+            continue
+        key_map.setdefault(int(row.user_id), set()).add(reminder_key)
+    return key_map
 
 
 async def _load_candidate_slots(window_start: datetime, window_end: datetime) -> list[MedicationSlot]:  # noqa: C901
@@ -246,20 +293,49 @@ async def dispatch_due_medication_notifications(*, window_start: datetime, windo
         "missed",
     )
 
+    intake_user_ids = {int(group.patient_user_id) for group in intake_groups if group.patient_user_id}
+    missed_user_ids = {int(user_id) for group in missed_groups for user_id in group.caregiver_user_ids}
+    all_group_dates = [
+        datetime.fromisoformat(group.scheduled_date).date()
+        for group in [*intake_groups, *missed_groups]
+    ]
+    date_from = min(all_group_dates) if all_group_dates else (window_start - grace).date()
+    date_to = max(all_group_dates) if all_group_dates else window_end.date()
+
+    intake_settings_map = await _load_settings_map(intake_user_ids)
+    missed_settings_map = await _load_settings_map(missed_user_ids)
+    intake_existing_keys = await _load_existing_reminder_keys_map(
+        user_ids=intake_user_ids,
+        notification_type=INTAKE_REMINDER_TYPE,
+        date_from=date_from,
+        date_to=date_to,
+    )
+    missed_existing_keys = await _load_existing_reminder_keys_map(
+        user_ids=missed_user_ids,
+        notification_type=MISSED_ALERT_TYPE,
+        date_from=date_from,
+        date_to=date_to,
+    )
+
     for group in intake_groups:
         if not group.patient_user_id:
             continue
 
+        patient_user_id = int(group.patient_user_id)
         reminder_key = _build_reminder_key(group)
-        if not await _is_notification_enabled(group.patient_user_id, "intake_reminder"):
+        if not _is_enabled_from_map(
+            settings_map=intake_settings_map,
+            user_id=patient_user_id,
+            field_name="intake_reminder",
+        ):
             continue
-        if await _notification_already_created(group.patient_user_id, INTAKE_REMINDER_TYPE, reminder_key):
+        if reminder_key in intake_existing_keys.get(patient_user_id, set()):
             continue
 
         title, body = _build_intake_message(group)
         payload_json = json.dumps(_build_group_payload(group), ensure_ascii=False, separators=(",", ":"))
         notif = await Notification.create(
-            user_id=group.patient_user_id,
+            user_id=patient_user_id,
             patient_id=group.patient_id,
             type=INTAKE_REMINDER_TYPE,
             title=title,
@@ -268,6 +344,7 @@ async def dispatch_due_medication_notifications(*, window_start: datetime, windo
             sent_at=None,
         )
         await enqueue_send_notification(notif.id)
+        intake_existing_keys.setdefault(patient_user_id, set()).add(reminder_key)
         created_count += 1
 
     for group in missed_groups:
@@ -279,13 +356,18 @@ async def dispatch_due_medication_notifications(*, window_start: datetime, windo
         payload_json = json.dumps(_build_group_payload(group), ensure_ascii=False, separators=(",", ":"))
 
         for caregiver_user_id in group.caregiver_user_ids:
-            if not await _is_notification_enabled(caregiver_user_id, "missed_alert"):
+            normalized_caregiver_user_id = int(caregiver_user_id)
+            if not _is_enabled_from_map(
+                settings_map=missed_settings_map,
+                user_id=normalized_caregiver_user_id,
+                field_name="missed_alert",
+            ):
                 continue
-            if await _notification_already_created(caregiver_user_id, MISSED_ALERT_TYPE, reminder_key):
+            if reminder_key in missed_existing_keys.get(normalized_caregiver_user_id, set()):
                 continue
 
             notif = await Notification.create(
-                user_id=caregiver_user_id,
+                user_id=normalized_caregiver_user_id,
                 patient_id=group.patient_id,
                 type=MISSED_ALERT_TYPE,
                 title=title,
@@ -294,6 +376,7 @@ async def dispatch_due_medication_notifications(*, window_start: datetime, windo
                 sent_at=None,
             )
             await enqueue_send_notification(notif.id)
+            missed_existing_keys.setdefault(normalized_caregiver_user_id, set()).add(reminder_key)
             created_count += 1
 
     return created_count

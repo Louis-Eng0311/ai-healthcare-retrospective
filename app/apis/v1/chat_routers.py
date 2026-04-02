@@ -13,12 +13,11 @@ from app.dtos.chat import (
     ChatMessageListResponse,
     ChatSessionCreateRequest,
     ChatSessionCreateResponse,
-    RequesterRole,
 )
 from app.models.chat import ChatSession
-from app.models.patients import CaregiverPatientLink, Patient
 from app.models.users import User
-from app.services.chat import ChatService, ChatServiceError, _resolve_requester_role
+from app.services.access_policy import assert_can_access_patient
+from app.services.chat import ChatService, ChatServiceError
 
 chat_router = APIRouter(prefix="/chat", tags=["chat"])
 
@@ -30,60 +29,6 @@ def _raise_service_error(exc: ChatServiceError) -> NoReturn:
         detail={
             "code": exc.code,
             "message": exc.message,
-        },
-    )
-
-
-# 환자 접근 권한 검사
-async def _assert_can_access_patient(*, requester: User, patient_id: int) -> None:
-    role = await _resolve_requester_role(int(requester.id))
-    patient = await Patient.get_or_none(id=patient_id)
-    if not patient:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={
-                "code": "PATIENT_NOT_FOUND",
-                "message": "환자 정보를 찾을 수 없습니다.",
-            },
-        )
-
-    if role == RequesterRole.ADMIN:
-        return
-
-    if role == RequesterRole.PATIENT:
-        if patient.user_id != int(requester.id) and patient.owner_user_id != int(requester.id):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail={
-                    "code": "FORBIDDEN",
-                    "message": "본인 환자 정보에만 접근할 수 있습니다.",
-                },
-            )
-        return
-
-    if role == RequesterRole.CAREGIVER:
-        if patient.user_id == int(requester.id) or patient.owner_user_id == int(requester.id):
-            return
-        linked = await CaregiverPatientLink.filter(
-            caregiver_user_id=int(requester.id),
-            patient_id=patient_id,
-            status="active",
-        ).exists()
-        if not linked:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail={
-                    "code": "FORBIDDEN",
-                    "message": "연결된 환자 정보에만 접근할 수 있습니다.",
-                },
-            )
-        return
-
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail={
-            "code": "FORBIDDEN",
-            "message": "권한이 없습니다.",
         },
     )
 
@@ -110,7 +55,7 @@ async def _assert_can_access_session(*, requester: User, session_id: int) -> Cha
             },
         )
 
-    await _assert_can_access_patient(requester=requester, patient_id=int(patient_id))
+    await assert_can_access_patient(requester=requester, patient_id=int(patient_id))
     return session
 
 
@@ -124,7 +69,7 @@ async def create_chat_session(
     req: ChatSessionCreateRequest,
     requester: User = Depends(get_request_user),
 ) -> ChatSessionCreateResponse:
-    await _assert_can_access_patient(
+    await assert_can_access_patient(
         requester=requester,
         patient_id=req.patient_id,
     )

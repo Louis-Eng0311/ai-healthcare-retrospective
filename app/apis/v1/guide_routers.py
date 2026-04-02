@@ -14,9 +14,9 @@ from app.dtos.guide import (
     GuideRegenerateResponse,
 )
 from app.models.documents import Document
-from app.models.patients import CaregiverPatientLink, Patient
+from app.models.patients import Patient
 from app.models.users import User
-from app.services.chat import _resolve_requester_role
+from app.services.access_policy import assert_can_access_patient, resolve_requester_role
 from app.services.guide import GuideService, GuideServiceError
 
 guide_router = APIRouter(prefix="/guides", tags=["guides"])
@@ -29,60 +29,6 @@ def _raise_service_error(exc: GuideServiceError) -> NoReturn:
         detail={
             "code": exc.code,
             "message": exc.message,
-        },
-    )
-
-
-# 환자 접근 권한 검사
-async def _assert_can_access_patient(*, requester: User, patient_id: int) -> None:
-    role = await _resolve_requester_role(int(requester.id))
-    patient = await Patient.get_or_none(id=patient_id)
-    if not patient:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail={
-                "code": "PATIENT_NOT_FOUND",
-                "message": "환자 정보를 찾을 수 없습니다.",
-            },
-        )
-
-    if role == RequesterRole.ADMIN:
-        return
-
-    if role == RequesterRole.PATIENT:
-        if patient.user_id != int(requester.id) and patient.owner_user_id != int(requester.id):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail={
-                    "code": "FORBIDDEN",
-                    "message": "본인 환자 정보에만 접근할 수 있습니다.",
-                },
-            )
-        return
-
-    if role == RequesterRole.CAREGIVER:
-        if patient.user_id == int(requester.id) or patient.owner_user_id == int(requester.id):
-            return
-        linked = await CaregiverPatientLink.filter(
-            caregiver_user_id=int(requester.id),
-            patient_id=patient_id,
-            status="active",
-        ).exists()
-        if not linked:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail={
-                    "code": "FORBIDDEN",
-                    "message": "연결된 환자 정보에만 접근할 수 있습니다.",
-                },
-            )
-        return
-
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail={
-            "code": "FORBIDDEN",
-            "message": "권한이 없습니다.",
         },
     )
 
@@ -109,7 +55,7 @@ async def _assert_can_access_document(*, requester: User, document_id: int) -> N
             },
         )
 
-    await _assert_can_access_patient(
+    await assert_can_access_patient(
         requester=requester,
         patient_id=int(patient_id),
     )
@@ -117,7 +63,7 @@ async def _assert_can_access_document(*, requester: User, document_id: int) -> N
 
 # 목록 조회 대상 환자 결정
 async def _resolve_list_patient_id(*, requester: User, patient_id: int | None) -> int:
-    role = await _resolve_requester_role(int(requester.id))
+    role = await resolve_requester_role(int(requester.id))
 
     if role == RequesterRole.ADMIN:
         if patient_id is None:
@@ -154,7 +100,7 @@ async def _resolve_list_patient_id(*, requester: User, patient_id: int | None) -
                     "message": "보호자 계정은 patient_id가 필요합니다.",
                 },
             )
-        await _assert_can_access_patient(requester=requester, patient_id=int(patient_id))
+        await assert_can_access_patient(requester=requester, patient_id=int(patient_id))
         return int(patient_id)
 
     raise HTTPException(
@@ -228,7 +174,7 @@ async def get_guide_detail(
     except GuideServiceError as exc:
         _raise_service_error(exc)
 
-    await _assert_can_access_patient(
+    await assert_can_access_patient(
         requester=requester,
         patient_id=result.data.patient_id,
     )
@@ -250,7 +196,7 @@ async def regenerate_guide(
     except GuideServiceError as exc:
         _raise_service_error(exc)
 
-    await _assert_can_access_patient(
+    await assert_can_access_patient(
         requester=requester,
         patient_id=detail.data.patient_id,
     )

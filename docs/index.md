@@ -1,3 +1,8 @@
-# AI Health Docs
+# AI Healthcare Docs
 
-문서를 다시 작성하는 중입니다.
+## 문서 목록
+
+- 구조 요약: `architecture.md`
+- 보안 점검: `security_review.md`
+- 개선 기록: `improvement_highlights.md`
+- 도메인별 학습 노트: `learning/`
